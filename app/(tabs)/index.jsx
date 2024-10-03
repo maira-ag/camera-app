@@ -22,18 +22,26 @@ export default function CameraApp() {
     }
 
     const tirarFoto = async () => {
-      const foto = await cameraRef.current?.takePictureAsync({
+      const foto_base64 = await cameraRef.current?.takePictureAsync({
         quality: 1,
         base64: true
       })
-
-      console.log(foto)
+      setFoto(foto_base64)
     }
 
     return (
-        <CameraView facing={'back'} style={styles.camera} ref={cameraRef}>
-          <Button title="Tirar foto" onPress={tirarFoto} />
-        </CameraView>
+      <View style={styles.container}>
+        {foto ?
+
+        <View>
+          <Image source={{uri: foto.uri}} style={styles.foto} />
+        </View> :
+
+          <CameraView facing={'back'} style={styles.camera} ref={cameraRef}>
+            <Button title="Tirar foto" onPress={tirarFoto} />
+          </CameraView>
+      }
+      </View>
     )
 }
 
@@ -48,5 +56,9 @@ const styles = StyleSheet.create({
   },
   camera: {
     flex:1,
+  },
+  foto: {
+    width: '100%',
+    height: '100%',
   }
 })
