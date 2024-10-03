@@ -5,6 +5,7 @@ import { CameraView, useCameraPermissions } from "expo-camera" //npm install exp
 export default function CameraApp() {
     const [permissao, pedirPermisao] = useCameraPermissions()
     const [foto, setFoto] = useState(null)
+    const cameraRef = useRef(null)
 
     if(!permissao){
         return(
@@ -21,11 +22,16 @@ export default function CameraApp() {
     }
 
     const tirarFoto = async () => {
-      
+      const foto = await cameraRef.current?.takePictureAsync({
+        quality: 1,
+        base64: true
+      })
+
+      console.log(foto)
     }
 
     return (
-        <CameraView facing={'back'} style={styles.camera}>
+        <CameraView facing={'back'} style={styles.camera} ref={cameraRef}>
           <Button title="Tirar foto" onPress={tirarFoto} />
         </CameraView>
     )
