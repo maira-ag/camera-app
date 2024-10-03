@@ -6,6 +6,7 @@ export default function CameraApp() {
     const [permissao, pedirPermisao] = useCameraPermissions()
     const [foto, setFoto] = useState(null)
     const cameraRef = useRef(null)
+    const [lado, setLado] = useState('back')
 
     if(!permissao){
         return(
@@ -23,22 +24,28 @@ export default function CameraApp() {
 
     const tirarFoto = async () => {
       const foto_base64 = await cameraRef.current?.takePictureAsync({
-        quality: 1,
+        quality: 0.1, // valores de 0 a 1
         base64: true
       })
       setFoto(foto_base64)
+    }
+
+    const trocaCamera = () => {
+      setLado(lado == 'back' ? 'front' : 'back')
     }
 
     return (
       <View style={styles.container}>
         {foto ?
 
-        <View>
+        <View style={styles.container}>
           <Image source={{uri: foto.uri}} style={styles.foto} />
+          <Button title="limpar foto" onPress={() => setFoto(null)}/>
         </View> :
 
-          <CameraView facing={'back'} style={styles.camera} ref={cameraRef}>
+          <CameraView facing={lado} style={styles.camera} ref={cameraRef}>
             <Button title="Tirar foto" onPress={tirarFoto} />
+            <Button title="inverter camera" onPress={trocaCamera} />
           </CameraView>
       }
       </View>
