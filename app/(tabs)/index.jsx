@@ -34,6 +34,10 @@ export default function CameraApp() {
       setLado(lado == 'back' ? 'front' : 'back')
     }
 
+    const salvarFoto = () => {
+      
+    }
+
     return (
       <View style={styles.container}>
         {foto ?
@@ -41,6 +45,7 @@ export default function CameraApp() {
         <View style={styles.container}>
           <Image source={{uri: foto.uri}} style={styles.foto} />
           <Button title="limpar foto" onPress={() => setFoto(null)}/>
+          <Button title="salvar foto" onPress={salvarFoto}/>
         </View> :
 
           <CameraView facing={lado} style={styles.camera} ref={cameraRef}>
@@ -65,7 +70,6 @@ const styles = StyleSheet.create({
     flex:1,
   },
   foto: {
-    width: '100%',
-    height: '100%',
+    flex: 1,
   }
 })
